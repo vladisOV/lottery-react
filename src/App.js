@@ -10,15 +10,17 @@ class App extends Component {
     players: [],
     balance: "",
     value: "",
-    message: ""
+    message: "",
+    lastWinner: ""
   };
 
   async componentDidMount() {
     const manager = await lottery.methods.manager().call();
     const players = await lottery.methods.getPlayers().call();
+    const lastWinner = await lottery.methods.lastWinner().call();
     const balance = await web3.eth.getBalance(lottery.options.address);
 
-    this.setState({ manager, players, balance });
+    this.setState({ manager, players, balance, lastWinner });
   }
 
   //arrow for 'this' (bind)
@@ -68,6 +70,7 @@ class App extends Component {
         <hr />
         <h4>Ready to pick a winner?</h4>
         <button onClick={this.onClick}>Pick a winner!</button>
+        <h5>The last winner is {this.state.lastWinner}</h5>
         <hr />
         <h1>{this.state.message}</h1>
       </div>
